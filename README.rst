@@ -2,8 +2,8 @@
 Django Cohort Analysis
 ===============================
 
-.. image:: https://img.shields.io/travis/jturner/django_cohort_analysis.svg
-        :target: https://travis-ci.org/jturner/django_cohort_analysis
+.. image:: https://travis-ci.org/jturner30/django_cohort_analysis.svg?branch=develop
+    :target: https://travis-ci.org/jturner30/django_cohort_analysis
 
 .. image:: https://img.shields.io/pypi/v/django_cohort_analysis.svg
         :target: https://pypi.python.org/pypi/django_cohort_analysis
