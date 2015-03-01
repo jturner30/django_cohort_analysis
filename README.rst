@@ -17,4 +17,4 @@ A small app to perform cohort analysis in Django
 Features
 --------
 
-* TODO
+* Perform cohort analysis on any django model that has a date_created or date_joined field
