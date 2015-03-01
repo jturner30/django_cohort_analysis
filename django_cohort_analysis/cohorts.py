@@ -2,7 +2,11 @@
 """
 from inspect import getmembers, isfunction
 from importlib import import_module
-from collections import OrderedDict
+try:
+    from collections import OrderedDict
+except ImportError:
+    # Python < 2.7
+    from ordereddict import OrderedDict
 import json
 from datetime import timedelta
 from exceptions import (NoMetricFileFound,

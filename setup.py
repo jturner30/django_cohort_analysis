@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import cohort
+import django_cohort_analysis
 
 try:
     from setuptools import setup
@@ -24,7 +24,7 @@ test_requirements = [
 
 setup(
     name='django_cohort_analysis',
-    version=cohort.__version__,
+    version=django_cohort_analysis.__version__,
     description="A small app to perform cohort analysis in Django",
     long_description=readme + '\n\n' + history,
     author="John Turner",
