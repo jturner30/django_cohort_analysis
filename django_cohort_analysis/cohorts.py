@@ -97,7 +97,10 @@ def extract_instances_in_date_range(model_instances, time_window_start, time_win
     :return: A queryset containing model instances in the date range
     :rtype: django.db.models.query.QuerySet
     """
-    return model_instances.filter(date_created__range=(time_window_start, time_window_end))
+    if model_instances.model.__name__ == 'User':
+        return model_instances.filter(date_joined__ranged=(time_window_start, time_window_end))
+    else:
+        return model_instances.filter(date_created__range=(time_window_start, time_window_end))
 
 
 def get_time_window_from_date(date, window_length=6):
