@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+import cohort
 
 try:
     from setuptools import setup
@@ -15,16 +15,16 @@ with open('HISTORY.rst') as history_file:
     history = history_file.read().replace('.. :changelog:', '')
 
 requirements = [
-    # TODO: put package requirements here
+    'Django >= 1.6.0',
 ]
 
 test_requirements = [
-    # TODO: put package test requirements here
+    'pytest',
 ]
 
 setup(
     name='django_cohort_analysis',
-    version='0.0.1',
+    version=cohort.__version__,
     description="A small app to perform cohort analysis in Django",
     long_description=readme + '\n\n' + history,
     author="John Turner",
@@ -39,7 +39,7 @@ setup(
     install_requires=requirements,
     license="BSD",
     zip_safe=False,
-    keywords='django_cohort_analysis',
+    keywords=['django', 'cohort', 'cohort analysis'],
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',
