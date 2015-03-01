@@ -17,10 +17,9 @@ from exceptions import (NoMetricFileFound,
 class Cohort:
     """A wrapper class for cohorts
 
-    Attributes:
-        start_date (datetime.datetime): The date of creation of the earliest model instance
-        end_date (datetime.datetime): The date of creation of the newest model instance
-        queryset (django.db.models.query.QuerySet): A list of model instances whos creation falls between the date range
+    :param datetime.datetime start_date: The date of creation of the earliest model instance
+    :param datetime.datetime end_date: The date of creation of the newest model instance
+    :param django.db.models.query.QuerySet queryset:  A list of model instances whos creation falls between the date range
     """
     def __init__(self, queryset, start_date, end_date):
         self.start_date = start_date
@@ -30,51 +29,49 @@ class Cohort:
 
 def snake_case_to_title(string):
     """ A convenience function that converts a snake-cased function name into title case
-    Args:
-        string (str): A string encoded using snake case
-    Returns:
-        retval (str): A converted string
+
+    :param str string: A string encoded using snake case
+    :return: A converted string
     """
     return string.replace('_', ' ').title()
 
 
 def get_file_or_default(metric_file):
     """ Returns the module name from which to extract metrics. Defaults to cohorts.metrics
-    Args:
-        metric_file (str): The name of the module to extract metrics from
-    Returns:
-        retval (str): The name of the module where metric functions reside
+
+    :param str metric_file:  The name of the module to extract metrics from
+    :return: The name of the module where metric functions reside
     """
     return metric_file if metric_file is not None else 'cohorts.metrics'
 
 
 def round_date_down(date_to_round):
     """Rounds a date down to the nearest Monday
-    Args:
-        date_to_round (datetime.datetime):
-    Returns:
-        retval (datetime.datetime): The rounded down date
+
+    :param  datetime.datetime date_to_round:
+    :return: The rounded down date
+    :rtype: datetime.datetime
     """
     return date_to_round - timedelta(days=date_to_round.weekday())
 
 
 def round_date_up(date_to_round):
     """Rounds a date up to the nearest Monday
-    Args:
-        date_to_round (datetime.datetime):
-    Returns:
-        retval (datetime.datetime): The rounded up date
+
+    :param datetime.datetime date_to_round:
+    :return: The rounded up date
+    :rtype: datetime.datetime
     """
     return date_to_round - timedelta(days=(7 - date_to_round.weekday()))
 
 
 def stretch_to_rounded_date_range(start_date, end_date):
     """Takes a date range and rounds the start date down and the end date up
-    Args:
-        start_date (datetime.datetime): The starting date
-        end_date (datetime.datetime): The ending date
-    Returns:
-        retval (tuple): Contains the new rounded dates
+
+    :param datetime.datetime start_date: The starting date
+    :param  datetime.datetime end_date: The ending date
+    :return: The rounded dates
+    :rtype: tuple
     """
     rounded_start_date = round_date_down(start_date)
     rounded_end_date = round_date_up(end_date)
@@ -83,33 +80,33 @@ def stretch_to_rounded_date_range(start_date, end_date):
 
 def get_sorted_metric_function_tuples(metrics_module):
     """Retrieves all metric functions from a file
-    Args:
-        metrics_module (str): The name of the module to retrieve metrics from
-    Returns:
-        retval (tuple): Contains (name of function, function object)
+
+    :param str metrics_module: The name of the module to retrieve metrics from
+    :return: The name of the function and the function objects
+    :rtype: tuple
     """
     return sorted(getmembers(metrics_module, isfunction))
 
 
 def extract_instances_in_date_range(model_instances, time_window_start, time_window_end):
     """Retrivies all instances of a model within a given time window
-    Args:
-        model_instances (django.db.models.query.QuerySet): The model to filter again
-        time_window_start (datetime.datetime):
-        time_window_end (datetime.datetime):
-    Returns:
-        retval (django.db.models.query.QuerySet): A queryset containing model instances in the date range
+
+    :param django.db.models.query.QuerySet model_instances: The model to filter again
+    :param  datetime.datetime time_window_start:
+    :param  datetime.datetime time_window_end:
+    :return: A queryset containing model instances in the date range
+    :rtype: django.db.models.query.QuerySet
     """
     return model_instances.filter(date_created__range=(time_window_start, time_window_end))
 
 
 def get_time_window_from_date(date, window_length=6):
     """ Takes a starting date and calculates a date range from it
-    Args:
-        date (datetime.datetime): The starting date
-        window_length (int): The number of days to calculate against
-    Returns:
-        retval (tuple): Contains (starting_date, ending_date)
+
+    :param datetime.datetime date: The starting date
+    :param int window_length: The number of days to calculate against
+    :return: starting_date, ending_date
+    :rtype: tuple
     """
     end_date = date + timedelta(days=window_length)
     return date, end_date
@@ -117,12 +114,12 @@ def get_time_window_from_date(date, window_length=6):
 
 def get_cohorts_from_model(model, start_date, end_date):
     """Retrieves a list of cohorts from a given Django model
-    Args:
-        model (django.db.models.Model): The model class to filter from
-        start_date (datetime.datetime):
-        end_date (datetime.datetime):
-    Returns:
-        cohorts (list of Cohort):
+
+    :param django.db.models.Model model: The model class to filter from
+    :param datetime.datetime start_date:
+    :param datetime.datetime end_date:
+    :return: A list of cohorts
+    :rtype: Cohort
     """
     cohorts = []
     try:
@@ -141,10 +138,10 @@ def get_cohorts_from_model(model, start_date, end_date):
 
 def get_metrics_from_file(metric_file):
     """Gets all metric functions within a file
-    Args:
-        metric_file (str): The name of the file to look in
-    Returns:
-        metrics (list of tuple): A list of tuples containing (function name, function object)
+
+    :param str metric_file: The name of the file to look in
+    :return: Tuples containing (function name, function object)
+    :rtype: list
     """
     try:
         metrics = import_module(metric_file)
@@ -158,20 +155,19 @@ def get_metrics_from_file(metric_file):
 
 def get_isoweek_from_date(date):
     """Convenience method to get the ISO week from a datetime
-    Args:
-        date (datetime.datetime):
-    Returns:
-        retval (int):
+
+    :param datetime.datetime date:
+    :rtype: int
     """
     return date.isocalendar()[1]
 
 
 def create_default_dict_for_cohort(cohort):
     """Creates an empty dictionary for cohort analysis
-    Args:
-        cohort (Cohort): The cohort to create a dictionary for
-    Returns:
-        retval (OrderedDict): A dictionary containing the analysis and born_week keys
+
+    :param Cohort cohort: The cohort to create a dictionary for
+    :return: A dictionary containing the analysis and born_week keys
+    :rtype: OrderedDict
     """
     default_dict = OrderedDict()
     default_dict['born_week'] = get_isoweek_from_date(cohort.start_date)
@@ -181,13 +177,13 @@ def create_default_dict_for_cohort(cohort):
 
 def map_metric_to_cohort(metric, cohort, start_date, end_date):
     """Applies a metric function to a cohort
-    Args:
-        metric (tuple): Must contain (function name, function object)
-        cohort (Cohort):
-        start_date (datetime.datetime):
-        end_date (datetime.datetime):
-    Returns:
-        metric_analysis (OrderedDict): A dict containing a formated function name and the result of the metric function_name
+
+    :param  tuple metric: Must contain (function name, function object)
+    :param Cohort cohort:
+    :param datetime.datetime start_date:
+    :param datetime.datetime end_date:
+    :return: A dict containing a formated function name and the result of the metric function_name
+    :rtype: OrderedDict
     """
     metric_analysis = OrderedDict()
     metric_analysis['function_name'] = snake_case_to_title(metric[0])
@@ -197,13 +193,13 @@ def map_metric_to_cohort(metric, cohort, start_date, end_date):
 
 def analyze_cohorts(cohorts, metric_file, start_date, end_date):
     """Apply analysis to a list of cohorts
-    Args:
-        cohorts (list of Cohort): A list of Cohort objects
-        metrics_file (str): The name of the file where the metrics live
-        start_date (datetime.datetime):
-        end_date (datetime.datetime):
-    Returns:
-        analysis (list of dict): A list of analysis dictionaries, one for each cohort
+
+    :param list cohorts: A list of Cohort objects
+    :param str metric_file: The name of the file where the metrics live
+    :param datetime.datetime start_date:
+    :param datetime.datetime end_date:
+    :return: A list of analysis dictionaries, one for each cohort
+    :rtype: list
     """
     analysis = []
     metrics = get_metrics_from_file(metric_file)
@@ -218,13 +214,13 @@ def analyze_cohorts(cohorts, metric_file, start_date, end_date):
 
 def analyze_cohorts_for_model(model, start_date, end_date, metric_file=None):
     """Retrives a model and applies cohort analysis to it
-    Args:
-        model (django.db.models.Model): A model to apply metrics to
-        start_date (datetime.datetime):
-        end_date (datetime.datetime):
-        metric_file (str, optional): The name of the metric file to pull from
-    Returns:
-        analysis (list of dict): A list of analysis dictionaries for each cohorts
+
+    :param django.db.models.Model model: A model to apply metrics to
+    :param datetime.datetime start_date:
+    :param datetime.datetime end_date:
+    :param str metric_file: The name of the metric file to pull from
+    :return: A list of analysis dictionaries for each cohorts
+    :rtype: list
     """
     rounded_start_date, rounded_end_date = stretch_to_rounded_date_range(start_date, end_date)
     metric_file = get_file_or_default(metric_file)

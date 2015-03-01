@@ -1,8 +1,6 @@
-"""Metrics
-
+"""
 All metrics in this file are called by cohorts.analyze_cohorts_for_model and follow the format:
 function_name(cohort, start_date, end_date)
-
 """
 from datetime import timedelta
 
@@ -10,13 +8,10 @@ from datetime import timedelta
 def example_metric(cohort, start_date, end_date):
     """An example metric that returns the number of members in a queryset
 
-    Args:
-        cohort (cohorts.Cohort): The cohort to analyze
-        start_date (datetime.datetime): The lower bounds of the date range to analyze
-        end_date (datetime.datetime): The upper bounds of the date range to analyze
-
-    Returns:
-        list: A list of metric results to be added to the analysis dictionary
+    :param cohorts.Cohort cohort: The cohort to analyze
+    :param datetime.datetime start_date: The lower bounds of the date range to analyze
+    :param datetime.datetime end_date: The upper bounds of the date range to analyze
+    :return: A list of metric results to be added to the analysis dictionary
     """
     result = []
     window_start_date = start_date
